@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/compare.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aboreto:wght@400&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Arima:wght@400&display=swap">
+    <title>Compare Cat Breed</title>
+</head>
+<body>
+    <div class="title-parent">
+        <div class="title">Compare</div>
+        <div class="nav">
+            <div class="main-btns">
+                <button class="nav-btn home-btn" onclick="window.location.href='/';">Home</button>
+                <button class="nav-btn identify-btn" onclick="window.location.href='/identify';">Identify</button>
+                <button class="nav-btn match-btn" onclick="window.location.href='/match';">Match</button>
+                <button class="nav-btn compare-btn" onclick="window.location.href='/compare';">Compare</button>
+                <button class="nav-btn about-btn" onclick="window.location.href='/about';">About</button>
+            </div>
+        </div>
+        <img class="logo-icon" alt="" src="../static/pics/face.png">
+        <div class="description">
+            Select a breed/breeds and let our <br>
+            AI give you a description or a comparison.
+        </div>
+        <img class="white-pattern-icon" alt="" src="../static/pics/white_pattern2.png">
+        <img class="freepik-adjust-83277-1-icon" alt="" src="../static/pics/38310671_8623740.png">
+    </div>
+
+    <!-- Right Side (Always Visible) -->
+    <div class="right-section">
+        <div class="form-toggle-buttons">
+            <button id="compareButton" onclick="showForm('compare')">Compare</button>
+            <button id="descriptionButton" onclick="showForm('description')">Description</button>
+        </div>
+        <form id="compareForm" >
+            <h2>Compare two breeds!</h2>
+            <p>
+                <label for="catDescription">Select two cat breeds:</label>
+                <select id="first-cat-breed" name="first-cat-breed" class="selection-menu">
+                      <option value="BEN">Bengal</option>
+                      <option value="SBI">Birman</option>
+                      <option value="BRI">British Shorthair</option>
+                      <option value="CHA">Chartreux</option>
+                      <option value="EUR">European Shorthair</option>
+                      <option value="MCO">Maine Coon</option>
+                      <option value="PER">Persian</option>
+                      <option value="RAG">Ragdoll</option>
+                      <option value="SPH">Sphynx</option>
+                      <option value="ORI">Oriental Shorthair</option>
+                      <option value="TUV">Turkish Van</option>
+                </select>
+                <select id="second-cat-breed" name="second-cat-breed" class="selection-menu">
+                      <option value="BEN">Bengal</option>
+                      <option value="SBI">Birman</option>
+                      <option value="BRI">British Shorthair</option>
+                      <option value="CHA">Chartreux</option>
+                      <option value="EUR">European Shorthair</option>
+                      <option value="MCO">Maine Coon</option>
+                      <option value="PER">Persian</option>
+                      <option value="RAG">Ragdoll</option>
+                      <option value="SPH">Sphynx</option>
+                      <option value="ORI">Oriental Shorthair</option>
+                      <option value="TUV">Turkish Van</option>
+                </select>
+            </p>
+            <p>
+                <button type="submit" class="submit_btn">Submit</button>
+            </p>
+            <p id="result">
+                <!-- Prediction result will appear here -->
+            </p>
+        </form>
+        <form id="descriptionForm" class="hidden">
+            <h2>Find out more about one breed!</h2>
+            <p>
+                <label for="catDescription">Select a cat breeds:</label>
+                <select id="first-cat-breed" name="first-cat-breed" class="selection-menu">
+                      <option value="BEN">Bengal</option>
+                      <option value="SBI">Birman</option>
+                      <option value="BRI">British Shorthair</option>
+                      <option value="CHA">Chartreux</option>
+                      <option value="EUR">European Shorthair</option>
+                      <option value="MCO">Maine Coon</option>
+                      <option value="PER">Persian</option>
+                      <option value="RAG">Ragdoll</option>
+                      <option value="SPH">Sphynx</option>
+                      <option value="ORI">Oriental Shorthair</option>
+                      <option value="TUV">Turkish Van</option>
+                </select>
+            </p>
+            <p>
+                <button type="submit" class="submit_btn">Submit</button>
+            </p>
+            <p id="result">
+                <!-- Prediction result will appear here -->
+            </p>
+        </form>
+    </div>
+    <script>
+        function showForm(formType) {
+            const compareForm = document.getElementById('compareForm');
+            const descriptionForm = document.getElementById('descriptionForm');
+
+            if (formType === 'compare') {
+                compareForm.classList.remove('hidden');
+                descriptionForm.classList.add('hidden');
+            } else if (formType === 'description') {
+                descriptionForm.classList.remove('hidden');
+                compareForm.classList.add('hidden');
+            }
+        }
+
+        // Show compare form by default on page load
+        window.onload = () => {
+            showForm('compare');
+        };
+        document.getElementById("descriptionForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            var descriptionInput = document.getElementById("catDescription");
+            var description = descriptionInput.value;
+
+            // Send the description to the backend using Fetch API
+            fetch('/identify', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ input: description }) // Send the input description
+            })
+            .then(response => {
+                if (!response.ok) {
+                    // If response is not okay, parse error and show
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.error || "Request failed");
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.description) {
+                    document.getElementById("result").innerHTML = `
+                        <h3>Prediction:</h3>
+                        <p>${data.description}</p>
+                    `;
+                } else {
+                    document.getElementById("result").innerText = "Unable to make a prediction.";
+                }
+
+                // Clear the input field
+                descriptionInput.value = "";
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // More detailed error display
+                document.getElementById("result").innerText = `An error occurred: ${error.message}`;
+            });
+        });
+    </script>
+</body>
+</html>

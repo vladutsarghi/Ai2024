@@ -1,0 +1,88 @@
+body {
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.title {
+    position: absolute;
+    top: 230px;
+    left: 674px;
+    font-size: 119px;
+    font-family: Comfortaa;
+}
+.white-pattern-icon {
+    position: absolute;
+    top: 268px;
+    left: -13px;
+    width: 542px;
+    height: 693px;
+}
+.cat-img {
+    position: absolute;
+    top: 297px;
+    left: -4px;
+    width: 533px;
+    height: 528px;
+    object-fit: cover;
+}
+.subtitle {
+    position: absolute;
+    top: 368px;
+    left: 691px;
+    font-size: 36px;
+}
+.description {
+    position: absolute;
+    top: 389px;
+    left: 691px;
+    font-size: 26px;
+    font-family: Arima;
+    display: flex;
+    align-items: center;
+    width: 460px;
+    height: 385px;
+}
+.logo-icon {
+    position: fixed;
+    top: 34px;
+    left: 52px;
+    width: 82px;
+    height: 70px;
+    object-fit: cover;
+}
+.title-parent {
+    width: 100%;
+    position: relative;
+    background-color: #3b2e2f;
+    height: 804px;
+    overflow: hidden;
+    text-align: left;
+    font-size: 20px;
+    color: #fff;
+    font-family: Aboreto;
+}
+.main-btns {
+    position: fixed;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+}
+.nav-btn {
+    background-color: #3b2e2f;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-family: Aboreto;
+    font-size: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.nav-btn:hover {
+    background-color: #3b2020;
+}

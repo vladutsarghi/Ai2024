@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/identify.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aboreto:wght@400&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Arima:wght@400&display=swap">
+    <title>Identify Cat Breed</title>
+</head>
+<body>
+    <div class="title-parent">
+        <div class="title">Identify</div>
+        <div class="nav">
+            <div class="main-btns">
+                <button class="nav-btn home-btn" onclick="window.location.href='/';">Home</button>
+                <button class="nav-btn identify-btn" onclick="window.location.href='/identify';">Identify</button>
+                <button class="nav-btn match-btn" onclick="window.location.href='/match';">Match</button>
+                <button class="nav-btn compare-btn" onclick="window.location.href='/compare';">Compare</button>
+                <button class="nav-btn about-btn" onclick="window.location.href='/about';">About</button>
+            </div>
+        </div>
+        <img class="logo-icon" alt="" src="../static/pics/face.png">
+        <div class="description">
+            Upload a photo or provide a description of a cat, <br>and let our advanced AI identify its breed in seconds.<br>
+            Gain insights into your cat's unique characteristics,<br> history, and care requirements.
+        </div>
+        <img class="white-pattern-icon" alt="" src="../static/pics/white_pattern2.png">
+        <img class="freepik-adjust-83277-1-icon" alt="" src="../static/pics/freepik__adjust__832772.png">
+    </div>
+
+    <!-- Right Side (Always Visible) -->
+    <div class="right-section">
+        <h2>Identify the breed!</h2>
+        <form id="identifyForm">
+            <p>
+                <label for="catDescription">Enter a description of your cat:</label>
+                <input type="text" id="catDescription" class="input_box" placeholder="Describe your cat...">
+            </p>
+            <p>
+                <button type="submit" class="submit_btn">Submit</button>
+            </p>
+            <p id="result">
+                <!-- Prediction result will appear here -->
+            </p>
+        </form>
+    </div>
+    <script>
+        document.getElementById("identifyForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            var descriptionInput = document.getElementById("catDescription");
+            var description = descriptionInput.value;
+
+            // Send the description to the backend using Fetch API
+            fetch('/identify', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ input: description }) // Send the input description
+            })
+            .then(response => {
+                if (!response.ok) {
+                    // If response is not okay, parse error and show
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.error || "Request failed");
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.description) {
+                    document.getElementById("result").innerHTML = `
+                        <h3>Prediction:</h3>
+                        <p>${data.description}</p>
+                    `;
+                } else {
+                    document.getElementById("result").innerText = "Unable to make a prediction.";
+                }
+
+                // Clear the input field
+                descriptionInput.value = "";
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // More detailed error display
+                document.getElementById("result").innerText = `An error occurred: ${error.message}`;
+            });
+        });
+    </script>
+</body>
+</html>
