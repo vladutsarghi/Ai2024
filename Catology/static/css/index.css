@@ -86,3 +86,11 @@ body {
 .nav-btn:hover {
     background-color: #3b2020;
 }
+
+
+.language{
+    border-radius: 20px;
+    background-color: #3b2e2f;
+    margin-top: 47px;
+    margin-left: 200px;
+}

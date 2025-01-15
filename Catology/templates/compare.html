@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/compare.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aboreto:wght@400&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Arima:wght@400&display=swap">
+    <title>Compare Cat Breed</title>
+</head>
+<body>
+    <div class="title-parent">
+        <div id="title" class="title">Compare</div>
+        <div class="nav">
+            <div class="main-btns">
+                <div class="language">
+                    <select id="language-selector">
+                        <option value="en">English</option>
+                        <option value="ro">Română</option>
+                    </select>
+                </div>
+                <button id="home-btn" class="nav-btn home-btn" onclick="window.location.href='/';">Home</button>
+                <button id="identify-btn" class="nav-btn identify-btn" onclick="window.location.href='/identify';">Identify</button>
+                <button id="match-btn" class="nav-btn match-btn" onclick="window.location.href='/match';">Match</button>
+                <button id="compare-btn" class="nav-btn compare-btn" onclick="window.location.href='/compare';">Compare</button>
+                <button id="about-btn" class="nav-btn about-btn" onclick="window.location.href='/about';">About</button>
+            </div>
+        </div>
+        <img class="logo-icon" alt="" src="../static/pics/face.png">
+        <div id="description" class="description">
+            Select a breed/breeds and let our <br>
+            AI give you a description or a comparison.
+        </div>
+        <img class="white-pattern-icon" alt="" src="../static/pics/white_pattern2.png">
+        <img class="freepik-adjust-83277-1-icon" alt="" src="../static/pics/38310671_8623740.png">
+    </div>
+
+    <!-- Right Side (Always Visible) -->
+    <div class="right-section">
+        <div id="loading" class="loading-overlay" style="display: none;">
+            <div class="spinner"></div>
+            <p id="loading-text">Our AI is thinking...<br>It will only take a few seconds...</p>
+        </div>
+        <div class="form-toggle-buttons">
+            <button id="compareButton" onclick="showForm('compare')">Compare</button>
+            <button id="descriptionButton" onclick="showForm('description')">Description</button>
+        </div>
+        <form id="compareForm">
+            <h2 id="compare-form-title">Compare two breeds!</h2>
+            <p>
+                <label for="catDescription" id="select-breeds-label">Select two cat breeds:</label>
+                <select id="first-cat-breed" name="first-cat-breed" class="selection-menu">
+                      <option value=1>Bengal</option>
+                      <option value=2>Birman</option>
+                      <option value=3>British Shorthair</option>
+                      <option value=4>Chartreux</option>
+                      <option value=5>European Shorthair</option>
+                      <option value=6>Maine Coon</option>
+                      <option value=7>Persian</option>
+                      <option value=8>Ragdoll</option>
+                      <option value=9>Sphynx</option>
+                      <option value=10>Oriental Shorthair</option>
+                      <option value=11>Turkish Van</option>
+                </select>
+                <select id="second-cat-breed" name="second-cat-breed" class="selection-menu">
+                      <option value=1>Bengal</option>
+                      <option value=2>Birman</option>
+                      <option value=3>British Shorthair</option>
+                      <option value=4>Chartreux</option>
+                      <option value=5>European Shorthair</option>
+                      <option value=6>Maine Coon</option>
+                      <option value=7>Persian</option>
+                      <option value=8>Ragdoll</option>
+                      <option value=9>Sphynx</option>
+                      <option value=10>Oriental Shorthair</option>
+                      <option value=11>Turkish Van</option>
+                </select>
+            </p>
+            <p>
+                <button type="submit" class="submit_btn" id="submit-compare-btn">Submit</button>
+            </p>
+            <p id="result-compare">
+                <!-- Prediction result will appear here -->
+            </p>
+        </form>
+        <form id="descriptionForm" class="hidden">
+            <h2 id="description-form-title">Find out more about one breed!</h2>
+            <p>
+                <label for="catDescription" id="select-breed-label">Select a cat breed:</label>
+                <select id="description-breed" name="first-cat-breed" class="selection-menu">
+                      <option value=1>Bengal</option>
+                      <option value=2>Birman</option>
+                      <option value=3>British Shorthair</option>
+                      <option value=4>Chartreux</option>
+                      <option value=5>European Shorthair</option>
+                      <option value=6>Maine Coon</option>
+                      <option value=7>Persian</option>
+                      <option value=8>Ragdoll</option>
+                      <option value=9>Sphynx</option>
+                      <option value=10>Oriental Shorthair</option>
+                      <option value=11>Turkish Van</option>
+                </select>
+            </p>
+            <p>
+                <button type="submit" class="submit_btn" id="submit-description-btn">Submit</button>
+            </p>
+            <p id="result-description">
+                <!-- Prediction result will appear here -->
+            </p>
+        </form>
+    </div>
+    <script>
+        const translations = {
+            en: {
+                title: "Compare",
+                description: "Select a breed/breeds and let our <br>AI give you a description or a comparison.",
+                loadingText: "Our AI is thinking...<br>It will only take a few seconds...",
+                compareFormTitle: "Compare two breeds!",
+                selectBreedsLabel: "Select two cat breeds:",
+                submitCompareBtn: "Submit",
+                descriptionFormTitle: "Find out more about one breed!",
+                selectBreedLabel: "Select a cat breed:",
+                submitDescriptionBtn: "Submit",
+                nav: {
+                    home: "Home",
+                    identify: "Identify",
+                    match: "Match",
+                    compare: "Compare",
+                    about: "About"
+                }
+            },
+            ro: {
+                title: "Compară",
+                description: "Selectează o rasă/să rase și lasă <br>AI-ul nostru să îți ofere o descriere sau o comparație.",
+                loadingText: "AI-ul nostru analizează...<br>Va dura doar câteva secunde...",
+                compareFormTitle: "Compară două rase!",
+                selectBreedsLabel: "Selectează:",
+                submitCompareBtn: "Trimite",
+                descriptionFormTitle: "Află mai multe despre o rasă!",
+                selectBreedLabel: "Selectează:",
+                submitDescriptionBtn: "Trimite",
+                nav: {
+                    home: "Acasă",
+                    identify: "Identifică",
+                    match: "Potrivește",
+                    compare: "Compară",
+                    about: "Despre noi"
+                }
+            }
+        };
+
+        function updateTexts(language) {
+            document.getElementById("title").innerText = translations[language].title;
+            document.getElementById("description").innerHTML = translations[language].description;
+            document.getElementById("loading-text").innerHTML = translations[language].loadingText;
+            document.getElementById("compare-form-title").innerText = translations[language].compareFormTitle;
+            document.getElementById("select-breeds-label").innerText = translations[language].selectBreedsLabel;
+            document.getElementById("submit-compare-btn").innerText = translations[language].submitCompareBtn;
+            document.getElementById("description-form-title").innerText = translations[language].descriptionFormTitle;
+            document.getElementById("select-breed-label").innerText = translations[language].selectBreedLabel;
+            document.getElementById("submit-description-btn").innerText = translations[language].submitDescriptionBtn;
+
+            // Update Navigation Buttons
+            document.getElementById("home-btn").innerText = translations[language].nav.home;
+            document.getElementById("identify-btn").innerText = translations[language].nav.identify;
+            document.getElementById("match-btn").innerText = translations[language].nav.match;
+            document.getElementById("compare-btn").innerText = translations[language].nav.compare;
+            document.getElementById("about-btn").innerText = translations[language].nav.about;
+        }
+
+       const savedLanguage = localStorage.getItem("language") || "en";
+        updateTexts(savedLanguage);
+        document.getElementById("language-selector").value = savedLanguage;
+
+        document.getElementById("language-selector").addEventListener("change", (e) => {
+            const selectedLanguage = e.target.value;
+            localStorage.setItem("language", selectedLanguage);
+            updateTexts(selectedLanguage);
+        });
+
+        function showForm(formType) {
+            const compareForm = document.getElementById('compareForm');
+            const descriptionForm = document.getElementById('descriptionForm');
+
+            if (formType === 'compare') {
+                compareForm.classList.remove('hidden');
+                descriptionForm.classList.add('hidden');
+            } else if (formType === 'description') {
+                descriptionForm.classList.remove('hidden');
+                compareForm.classList.add('hidden');
+            }
+        }
+
+        // Show compare form by default on page load
+        window.onload = () => {
+            showForm('compare');
+        };
+
+        document.getElementById("descriptionForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const selectedBreed = document.getElementById("description-breed").value;
+            var loadingElement = document.getElementById("loading");
+
+            loadingElement.style.display = "flex";
+
+            // Send the description to the backend using Fetch API
+            fetch('/compare', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ input: selectedBreed,
+                                        type: 0,
+                                        lg: localStorage.getItem("language") || "en"
+                                    }) // Send the input description
+            })
+            .then(response => {
+                if (!response.ok) {
+                    // If response is not okay, parse error and show
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.error || "Request failed");
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                loadingElement.style.display = "none";
+                if (data.description) {
+                    document.getElementById("result-description").innerHTML = `
+                        <h3>Description:</h3>
+                        <p>${data.description}</p>
+                    `;
+                } else {
+                    document.getElementById("result-description").innerText = "Unable to make a prediction.";
+                }
+
+                // Clear the input field
+                selectedBreed.value = "";
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                loadingElement.style.display = "none";
+                // More detailed error display
+                document.getElementById("result-description").innerText = `An error occurred: ${error.message}`;
+            });
+        });
+
+        document.getElementById("compareForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const firstBreed = document.getElementById("first-cat-breed").value;
+            const secondBreed = document.getElementById("second-cat-breed").value;
+            var loadingElement = document.getElementById("loading");
+
+            loadingElement.style.display = "flex";
+            // Send the description to the backend using Fetch API
+            fetch('/compare', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({  input: firstBreed,
+                                        input2: secondBreed,
+                                        type: 1,
+                                        lg: localStorage.getItem("language") || "en"
+
+                }) // Send the input description
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.error || "Request failed");
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                loadingElement.style.display = "none";
+                if (data.description) {
+                    document.getElementById("result-compare").innerHTML = `
+                        <h3>Prediction:</h3>
+                        <p>${data.description}</p>
+                    `;
+                } else {
+                    document.getElementById("result-compare").innerText = "Unable to make a prediction.";
+                }
+
+                // Clear the input field
+                firstBreed.value = "";
+                secondBreed.value = "";
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                loadingElement.style.display = "none";
+                // More detailed error display
+                document.getElementById("result-compare").innerText = `An error occurred: ${error.message}`;
+            });
+        });
+    </script>
+</body>
+</html>

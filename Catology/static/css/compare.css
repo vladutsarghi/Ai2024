@@ -8,14 +8,14 @@ body {
 
 .title {
     position: absolute;
-    top: 120px;
+    top: 170px;
     left: 101px;
 }
 
 .nav {
     position: absolute;
     top: 40px;
-    left: 240px;
+    left: 170px;
     width: 1328px;
     height: 91px;
     font-size: 26px;
@@ -23,8 +23,8 @@ body {
 }
 
 .main-btns {
-    position: fixed;
-    gap: 20px;
+    display: flex;
+    gap: 10px;
 }
 .nav-btn {
     background-color: #3b2e2f;
@@ -32,7 +32,7 @@ body {
     border: none;
     padding: 10px 20px;
     font-family: Aboreto;
-    font-size: 20px;
+    font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -47,8 +47,8 @@ body {
 
     justify-content: left;
     width: 100%;
-    margin-top: 250px;
-    margin-left: 100px;
+    margin-top: 290px;
+    margin-left: 110px;
 }
 .logo-icon {
     position: fixed;
@@ -59,17 +59,18 @@ body {
     object-fit: cover;
 }
 .white-pattern-icon {
+    transform: scaleX(-1);
     position: absolute;
-    top: 400px;
-    width: 800px;
-    height: 980px;
+    top: 319px;
+    width: 578px;
+    height: 739px;
     object-fit: contain;
 }
-.golden-bengal-cat-white-1-icon {
+.freepik-adjust-83277-1-icon {
     position: absolute;
-    top: 320px;
-    width: 857px;
-    height: 538px;
+    top: 364px;
+    width: 506px;
+    height: 657px;
     object-fit: cover;
 }
 .title-parent {
@@ -144,8 +145,79 @@ form button:hover {
 
 .submit_btn {
     padding: 10px;
+    margin-top: 20px;
     border-radius: 20px;
     width: 100px;
     align-items: center;
 }
 
+ .form-toggle-buttons {
+     margin-top: -509px;
+     margin-bottom: 200px;
+     position: fixed;
+ }
+
+.form-toggle-buttons button {
+    margin-right: 10px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    font-family: Comfortaa, sans-serif;
+    background-color: #1c1617;
+    color: #fff;
+}
+
+.form-toggle-buttons button:hover{
+        background-color: #351818;
+}
+
+ .hidden {
+     display: none;
+ }
+
+ .selection-menu{
+     border-radius: 20px;
+     padding: 5px;
+     align-items: center;
+     position: relative;
+     background-color: #1c1617;
+     color: #fff;
+ }
+ .selection-menu:hover{
+     background-color: #351818;
+ }
+
+ .loading-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 35%;
+    height: 100%;
+    padding: 20px;
+    background-color: rgba(46, 32, 32, 0.84);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #8a4747;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

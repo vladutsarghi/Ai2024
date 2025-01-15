@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/identify.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aboreto:wght@400&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Arima:wght@400&display=swap">
+    <title>Identify Cat Breed</title>
+</head>
+<body>
+    <div class="title-parent">
+        <div id="title" class="title">Identify</div>
+        <div class="nav">
+            <div class="main-btns">
+                <div class="language">
+                    <select id="language-selector">
+                        <option value="en">English</option>
+                        <option value="ro">Română</option>
+                    </select>
+                </div>
+                <button id="home-btn" class="nav-btn home-btn" onclick="window.location.href='/';">Home</button>
+                <button id="identify-btn" class="nav-btn identify-btn" onclick="window.location.href='/identify';">Identify</button>
+                <button id="match-btn" class="nav-btn match-btn" onclick="window.location.href='/match';">Match</button>
+                <button id="compare-btn" class="nav-btn compare-btn" onclick="window.location.href='/compare';">Compare</button>
+                <button id="about-btn" class="nav-btn about-btn" onclick="window.location.href='/about';">About</button>
+            </div>
+        </div>
+        <img class="logo-icon" alt="" src="../static/pics/face.png">
+        <div id="description" class="description">
+            Upload a photo or provide a description of a cat, <br>and let our advanced AI identify its breed in seconds.<br>
+            Gain insights into your cat's unique characteristics,<br> history, and care requirements.
+        </div>
+        <img class="white-pattern-icon" alt="" src="../static/pics/white_pattern2.png">
+        <img class="freepik-adjust-83277-1-icon" alt="" src="../static/pics/freepik__adjust__832772.png">
+    </div>
+
+    <!-- Right Side (Always Visible) -->
+    <div class="right-section">
+         <div id="loading" class="loading-overlay" style="display: none;">
+            <div class="spinner"></div>
+            <p id="loading-text">Our AI is thinking...<br>It will only take a few seconds...</p>
+        </div>
+        <h2 id="form-title">Identify the breed!</h2>
+        <form id="identifyForm">
+            <p>
+                <label id="description-label" for="catDescription">Enter a description of your cat:</label>
+                <input type="text" id="catDescription" class="input_box" placeholder="Describe your cat...">
+            </p>
+            <p>
+                <button type="submit" id="submit-btn" class="submit_btn">Submit</button>
+            </p>
+            <p id="result">
+                <!-- Prediction result will appear here -->
+            </p>
+        </form>
+    </div>
+    <script>
+        const translations = {
+            en: {
+                title: "Identify",
+                description: "Upload a photo or provide a description of a cat, <br>and let our advanced AI identify its breed in seconds.<br>Gain insights into your cat's unique characteristics,<br> history, and care requirements.",
+                loadingText: "Our AI is thinking...<br>It will only take a few seconds...",
+                formTitle: "Identify the breed!",
+                descriptionLabel: "Enter a description of your cat:",
+                submitBtn: "Submit",
+                nav: {
+                    home: "Home",
+                    identify: "Identify",
+                    match: "Match",
+                    compare: "Compare",
+                    about: "About"
+                }
+            },
+            ro: {
+                title: "Identifică",
+                description: "Încarcă o fotografie sau oferă o descriere a unei pisici,<br>și lasă AI-ul nostru avansat să identifice rasa în câteva secunde.<br>Descoperă detalii despre caracteristicile,<br> istoria și cerințele de îngrijire ale pisicii tale.",
+                loadingText: "AI-ul nostru analizează...<br>Va dura doar câteva secunde...",
+                formTitle: "Identifică rasa!",
+                descriptionLabel: "Introdu o descriere a pisicii tale:",
+                submitBtn: "Trimite",
+                nav: {
+                    home: "Acasă",
+                    identify: "Identifică",
+                    match: "Potrivește",
+                    compare: "Compară",
+                    about: "Despre noi"
+                }
+            }
+        };
+
+        function updateTexts(language) {
+            document.getElementById("title").innerText = translations[language].title;
+            document.getElementById("description").innerHTML = translations[language].description;
+            document.getElementById("loading-text").innerHTML = translations[language].loadingText;
+            document.getElementById("form-title").innerText = translations[language].formTitle;
+            document.getElementById("description-label").innerText = translations[language].descriptionLabel;
+            document.getElementById("submit-btn").innerText = translations[language].submitBtn;
+
+            // Update Navigation Buttons
+            document.getElementById("home-btn").innerText = translations[language].nav.home;
+            document.getElementById("identify-btn").innerText = translations[language].nav.identify;
+            document.getElementById("match-btn").innerText = translations[language].nav.match;
+            document.getElementById("compare-btn").innerText = translations[language].nav.compare;
+            document.getElementById("about-btn").innerText = translations[language].nav.about;
+        }
+
+        const savedLanguage = localStorage.getItem("language") || "en";
+        updateTexts(savedLanguage);
+        document.getElementById("language-selector").value = savedLanguage;
+
+        document.getElementById("language-selector").addEventListener("change", (e) => {
+            const selectedLanguage = e.target.value;
+            localStorage.setItem("language", selectedLanguage);
+            updateTexts(selectedLanguage);
+        });
+
+
+
+
+        document.getElementById("identifyForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            var descriptionInput = document.getElementById("catDescription");
+            var description = descriptionInput.value;
+            var loadingElement = document.getElementById("loading");
+
+            loadingElement.style.display = "flex";
+
+            // Send the description to the backend using Fetch API
+            fetch('/identify', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ input: description,
+                                       lg: localStorage.getItem("language") || "en"
+                                    }) // Send the input description
+            })
+            .then(response => {
+                if (!response.ok) {
+                    // If response is not okay, parse error and show
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.error || "Request failed");
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                loadingElement.style.display = "none";
+                if (data.description) {
+                    document.getElementById("result").innerHTML = `
+                        <h3>Prediction:</h3>
+                        <p>${data.description}</p>
+                    `;
+                } else {
+                    document.getElementById("result").innerText = "Unable to make a prediction.";
+                }
+
+                // Clear the input field
+                descriptionInput.value = "";
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                loadingElement.style.display = "none";
+                // More detailed error display
+                document.getElementById("result").innerText = `An error occurred: ${error.message}`;
+            });
+        });
+    </script>
+</body>
+</html>
