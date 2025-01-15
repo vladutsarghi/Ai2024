@@ -120,7 +120,7 @@ form button:hover {
     position: fixed;
     top: 0;
     right: 0;
-    width: 35%; /* Set the width of the right section */
+    width: 35%;
     height: 100vh;
     padding: 20px;
     background-color: rgba(29, 22, 22, 0.7);
@@ -132,7 +132,7 @@ form button:hover {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    text-align: center; /* Centers text horizontally */
+    text-align: center;
 }
 
 .input_box {

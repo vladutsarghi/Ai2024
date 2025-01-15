@@ -41,7 +41,6 @@
   	</div>
 
   	<script>
-  		// Obiectul de traduceri
   		const translations = {
     			en: {
       				title: "Catology",
@@ -65,7 +64,6 @@
     			}
   		};
 
-  		// Funcție pentru actualizarea textelor
   		function updateTexts(language) {
     			document.getElementById("title").innerText = translations[language].title;
     			document.getElementById("subtitle").innerText = translations[language].subtitle;
@@ -77,12 +75,10 @@
     			document.getElementById("about-btn").innerText = translations[language].about;
   		}
 
-  		// Detectare limbă implicită sau selectată
   		const savedLanguage = localStorage.getItem("language") || "en";
   		updateTexts(savedLanguage);
   		document.getElementById("language-selector").value = savedLanguage;
 
-  		// Schimbarea limbii
   		document.getElementById("language-selector").addEventListener("change", (e) => {
     			const selectedLanguage = e.target.value;
     			localStorage.setItem("language", selectedLanguage);

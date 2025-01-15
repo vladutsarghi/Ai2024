@@ -15,7 +15,7 @@ def count_values_per_attribute():
 
     all_att = []
     for breed in range(1, 13):
-        filtered_data = data[data.iloc[:, 1] == breed]  # Selectăm rândurile unde coloana 2 este 1
+        filtered_data = data[data.iloc[:, 1] == breed]
         att = []
         for i in range(0,25):
             if i not in not_good_i:
@@ -24,12 +24,11 @@ def count_values_per_attribute():
                 count_of_twos = (filtered_data.iloc[:, i] == 2).sum()
                 count_of_threes = (filtered_data.iloc[:, i] == 3).sum()
                 count_of_fours = (filtered_data.iloc[:, i] == 4).sum()
-                # Afișăm rezultatele
 
                 denominator = (count_of_zeros + count_of_ones + count_of_twos + count_of_threes + count_of_fours)
 
                 if denominator == 0:
-                    avg = 0  # Handle the case when no values exist
+                    avg = 0
                 else:
                     avg = ((
                                        count_of_zeros + count_of_ones + 2 * count_of_twos + 3 * count_of_threes + 4 * count_of_fours) /
@@ -55,10 +54,8 @@ def count_values_per_attribute():
         for row_idx, value in enumerate(column, start=2):
             ws.cell(row=row_idx, column=col_idx, value=value)
 
-    # Salvarea fișierului Excel
     wb.save("output.xlsx")
 
     print("Matricea a fost salvată în fișierul 'output.xlsx'.")
-# Apelarea funcției
 
 count_values_per_attribute()

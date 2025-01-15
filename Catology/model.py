@@ -158,30 +158,3 @@ class RN:
         np.save('b1.npy', self.b1)
         np.save('b2.npy', self.b2)
 
-    # Call this function after training
-
-
-# if __name__ == "__main__":
-#     # Only call train_model if running this file directly
-#     train_dynamic(train_X, train_Y, epochs=500)
-#
-#     save_model()
-#     # weights_input_hidden = np.load('weights_input_hidden.npy')
-#     # weights_hidden_output = np.load('weights_hidden_output.npy')
-#     #
-#     # b1 = np.load('b1.npy')
-#     # b2 = np.load('b2.npy')
-#     # test_x = [2,2,1,4,1,1]
-#     #
-#     # input_data = test_x / np.max(test_x)  # Since the scores range between 0 and 5
-#     #
-#     # # Perform forward pass
-#     # hidden_layer = sigmoid(np.dot(input_data, weights_input_hidden) + b1)
-#     # output_layer = softmax(np.dot(hidden_layer, weights_hidden_output) + b2)
-#     #
-#     # # Return the index of the class with the highest probability
-#     # predicted_class = np.argmax(output_layer, axis=1)[0]
-#     # print("returnez predictie")
-#     # print( predicted_class )
-#     #
-#     # # print(forward(test_x))

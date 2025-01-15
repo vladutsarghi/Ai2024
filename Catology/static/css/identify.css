@@ -39,7 +39,6 @@ body {
     object-fit: cover;
 }
 
-/* Title text inside .title-parent */
 .title {
     position: absolute;
     top: 120px;
@@ -54,12 +53,11 @@ body {
     object-fit: contain;
 }
 
-/* Right Section */
 .right-section {
     position: fixed;
     top: 0;
     right: 0;
-    width: 35%; /* Set the width of the right section */
+    width: 35%;
     height: 100vh;
     padding: 20px;
     background-color: rgba(29, 22, 22, 0.7);
@@ -71,10 +69,9 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    text-align: center; /* Centers text horizontally */
+    text-align: center;
 }
 
-/* Description text */
 .description {
     font-size: 20px;
     font-family: Arima;
@@ -86,7 +83,6 @@ body {
     margin-left: 100px;
 }
 
-/* Form Button */
 form button {
     background-color: #1c1617;
     color: #fff;
@@ -101,7 +97,6 @@ form button:hover {
     background-color: #351818;
 }
 
-/* Input Fields */
 .input_box {
     width: 80%;
     height: 50px;
@@ -117,7 +112,6 @@ form button:hover {
     align-items: center;
 }
 
-/* Main buttons in the navigation */
 .nav-btn {
     background-color: #3b2e2f;
     color: #fff;
@@ -139,7 +133,6 @@ form button:hover {
     gap: 10px;
 }
 
-/* Logo Icon */
 .logo-icon {
     position: fixed;
     top: 34px;

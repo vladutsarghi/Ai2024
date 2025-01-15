@@ -18,7 +18,6 @@ pipe = pipeline(
     model="google/gemma-2-2b-it",
     model_kwargs={"torch_dtype": torch.bfloat16},
     device="cuda"
-    # replace with "mps" to run on a Mac device
 )
 
 app = Flask(__name__)
@@ -40,11 +39,7 @@ def softmax(z):
 
 
 def predict_nn(attributes):
-    """
-    Perform inference using the trained neural network.
-    :param attributes: A dictionary with the input features for the neural network.
-    :return: Neural network predictions.
-    """
+
     print("fac predictie")
     rn = RN()
     rn.prepare(attributes)
@@ -56,7 +51,6 @@ def predict_nn(attributes):
     b1 = np.load('Catology/b1.npy')
     b2 = np.load('Catology/b2.npy')
 
-    # Convert the attributes to the correct input format
 
     input_data = np.array([[
         attributes["Number"],
@@ -84,12 +78,10 @@ def predict_nn(attributes):
 
 
 def validate_output(generated_text):
-    """
-    Validate the model's output to ensure it matches the expected format.
-    """
+
     pattern = r"-([\w_]+):\s*(-?\d)"
     matches = re.findall(pattern, generated_text)
-    if len(matches) == 13:  # Ensure all attributes are present
+    if len(matches) == 13:
         return {attr: int(score) for attr, score in matches}
     else:
         print("Validation failed for output:", generated_text)
@@ -97,9 +89,7 @@ def validate_output(generated_text):
 
 
 def evaluate_attributes(input_text):
-    """
-    Generate and validate the attributes using Gemma.
-    """
+
 
     prompt = f"""
     Evaluate the following characteristics of the animal and assign a score each attribute. 
@@ -127,7 +117,6 @@ def evaluate_attributes(input_text):
 
         """
 
-    # Generate response using Gemma
     messages = [
         {"role": "user", "content": prompt}
     ]
@@ -135,10 +124,8 @@ def evaluate_attributes(input_text):
     response = pipe(messages, max_new_tokens=256)
     generated_text = response[0]["generated_text"][-1]["content"].strip()
 
-    # Debug output
     print(f"Generated raw output: {generated_text}")
 
-    # Validate output
     attributes_dict = validate_output(generated_text)
 
     print(f"Parsed attributes: {attributes_dict}")
@@ -183,14 +170,12 @@ def return_human_description(predicted_class, human_description):
        Here is the description of the human: {human_description}
        format the text a bit so it's not just a block of text and don't ask the user anything, just give the breed and the reasoning!!!
                """
-    # Generate response using Gemma
     messages = [
         {"role": "user", "content": prompt}
     ]
     response = pipe(messages, max_new_tokens=256)
     generated_text = response[0]["generated_text"][-1]["content"].strip()
 
-    # Debug output
     print(f"Generated raw output: {generated_text}")
 
     return generated_text
@@ -216,14 +201,12 @@ def return_human_description_ro(predicted_class, human_description):
        Aceasta este descrierea omului {human_description}
        Formateaza textul un pic sa nu fie doar un bloc de text si nu pune nicio intrebare inapoi, doar da rasa si motivul. Raspunde in romana!
                """
-    # Generate response using Gemma
     messages = [
         {"role": "user", "content": prompt}
     ]
     response = pipe(messages, max_new_tokens=256)
     generated_text = response[0]["generated_text"][-1]["content"].strip()
 
-    # Debug output
     print(f"Generated raw output: {generated_text}")
 
     return generated_text
@@ -267,14 +250,12 @@ def get_breed_description(attributes_dict):
         Only say the description, nothing else!!
         Here is the information: {attributes_dict}
                 """
-    # Generate response using Gemma
     messages = [
         {"role": "user", "content": prompt}
     ]
     response = pipe(messages, max_new_tokens=256)
     generated_text = response[0]["generated_text"][-1]["content"].strip()
 
-    # Debug output
     print(f"Generated raw output: {generated_text}")
 
     return generated_text
@@ -289,14 +270,12 @@ def get_breed_description_ro(attributes_dict):
         Return the text and only the text translated to romanian.
 
                 """
-    # Generate response using Gemma
     messages = [
         {"role": "user", "content": prompt}
     ]
     response = pipe(messages, max_new_tokens=256)
     generated_text = response[0]["generated_text"][-1]["content"].strip()
 
-    # Debug output
     print(f"Generated raw output: {generated_text}")
 
     return generated_text
@@ -311,14 +290,12 @@ def get_breed_comparison(breed1, breed2):
             Here is the first breed: {breed1}
             Here is the second breed: {breed2}
                     """
-    # Generate response using Gemma
     messages = [
         {"role": "user", "content": prompt}
     ]
     response = pipe(messages, max_new_tokens=256)
     generated_text = response[0]["generated_text"][-1]["content"].strip()
 
-    # Debug output
     print(f"Generated raw output: {generated_text}")
 
     return generated_text
@@ -334,14 +311,12 @@ def get_breed_comparison_ro(breed1, breed2):
             
             Return the text and only the text translated to romanian.
                     """
-    # Generate response using Gemma
     messages = [
         {"role": "user", "content": prompt}
     ]
     response = pipe(messages, max_new_tokens=256)
     generated_text = response[0]["generated_text"][-1]["content"].strip()
 
-    # Debug output
     print(f"Generated raw output: {generated_text}")
 
     return generated_text
@@ -356,20 +331,17 @@ def index():
 def identify():
     if request.method == "POST":
         try:
-            # Parse JSON data from the request
             data = request.get_json()
             user_input = data.get('input', '').strip()
             lang = data.get('lg')
 
             print(f"User input: {user_input}")
 
-            # Initialize response variables
             attributes = None
             prediction = None
             description = None
 
             if user_input:
-                # Process the input
                 attributes = evaluate_attributes(user_input)
                 if attributes:
                     prediction = predict_nn(attributes)
@@ -378,7 +350,6 @@ def identify():
                 if prediction:
                     description = return_cat_description(prediction)
 
-                # Send the description as a JSON response
 
                 print("here")
                 return jsonify({'description': description or "No description available"})
@@ -389,7 +360,6 @@ def identify():
             print(f"Error processing request: {e}")
             return jsonify({'error': str(e)}), 500
 
-    # For GET requests (if any), return the form template
     form = UserInput()
     return render_template('identify.html', user_input=form)
 
@@ -398,20 +368,17 @@ def identify():
 def match():
     if request.method == "POST":
         try:
-            # Parse JSON data from the request
             data = request.get_json()
             user_input = data.get('input', '').strip()
             lang = data.get('lg')
 
             print(f"User input: {user_input}")
 
-            # Initialize response variables
             attributes = None
             prediction = None
             description = None
 
             if user_input:
-                # Process the input
                 attributes = evaluate_attributes(user_input)
                 if attributes:
                     prediction = predict_nn(attributes)

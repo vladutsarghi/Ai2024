@@ -36,7 +36,6 @@
         <img class="freepik-adjust-83277-1-icon" alt="" src="../static/pics/freepik__adjust__832772.png">
     </div>
 
-    <!-- Right Side (Always Visible) -->
     <div class="right-section">
          <div id="loading" class="loading-overlay" style="display: none;">
             <div class="spinner"></div>
@@ -52,7 +51,6 @@
                 <button type="submit" id="submit-btn" class="submit_btn">Submit</button>
             </p>
             <p id="result">
-                <!-- Prediction result will appear here -->
             </p>
         </form>
     </div>
@@ -98,7 +96,6 @@
             document.getElementById("description-label").innerText = translations[language].descriptionLabel;
             document.getElementById("submit-btn").innerText = translations[language].submitBtn;
 
-            // Update Navigation Buttons
             document.getElementById("home-btn").innerText = translations[language].nav.home;
             document.getElementById("identify-btn").innerText = translations[language].nav.identify;
             document.getElementById("match-btn").innerText = translations[language].nav.match;
@@ -120,7 +117,7 @@
 
 
         document.getElementById("identifyForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent the default form submission
+            event.preventDefault();
 
             var descriptionInput = document.getElementById("catDescription");
             var description = descriptionInput.value;
@@ -128,7 +125,6 @@
 
             loadingElement.style.display = "flex";
 
-            // Send the description to the backend using Fetch API
             fetch('/identify', {
                 method: 'POST',
                 headers: {
@@ -136,11 +132,10 @@
                 },
                 body: JSON.stringify({ input: description,
                                        lg: localStorage.getItem("language") || "en"
-                                    }) // Send the input description
+                                    })
             })
             .then(response => {
                 if (!response.ok) {
-                    // If response is not okay, parse error and show
                     return response.json().then(errorData => {
                         throw new Error(errorData.error || "Request failed");
                     });
@@ -158,13 +153,11 @@
                     document.getElementById("result").innerText = "Unable to make a prediction.";
                 }
 
-                // Clear the input field
                 descriptionInput.value = "";
             })
             .catch(error => {
                 console.error('Error:', error);
                 loadingElement.style.display = "none";
-                // More detailed error display
                 document.getElementById("result").innerText = `An error occurred: ${error.message}`;
             });
         });
